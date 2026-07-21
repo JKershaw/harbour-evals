@@ -25,11 +25,45 @@ Tool input schemas:
 If your previous output was rejected, emit only the JSON object with no surrounding text.`;
 
 function parseAgentResponse(content: string): AgentResponse | null {
+  // Try plain JSON first
   try {
-    return JSON.parse(content) as AgentResponse;
+    const parsed = JSON.parse(content) as AgentResponse;
+    if (parsed && typeof parsed === 'object' && 'action' in parsed) {
+      return parsed;
+    }
   } catch {
-    return null;
+    // fall through to extraction fallbacks
   }
+
+  // Fallback: extract JSON object embedded in surrounding text (e.g. preamble + JSON)
+  const jsonMatch = content.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse(jsonMatch[0]) as AgentResponse;
+      if (parsed && typeof parsed === 'object' && 'action' in parsed) {
+        return parsed;
+      }
+    } catch {
+      // fall through to XML fallback
+    }
+  }
+
+  // Fallback: parse <tool_call>TOOL<arg_key>K</arg_key><arg_value>V</arg_value>...</tool_call>
+  const xmlMatch = content.match(/<tool_call>([\w-]+)([\s\S]*?)<\/tool_call>/);
+  if (xmlMatch) {
+    const toolName = xmlMatch[1];
+    const argsXml = xmlMatch[2] ?? '';
+    const input: Record<string, string> = {};
+    const argPairs = [...argsXml.matchAll(/<arg_key>([\s\S]*?)<\/arg_key><arg_value>([\s\S]*?)<\/arg_value>/g)];
+    for (const pair of argPairs) {
+      if (pair[1] && pair[2] !== undefined) {
+        input[pair[1]] = pair[2];
+      }
+    }
+    return { action: 'tool', tool: toolName, input } as AgentResponse;
+  }
+
+  return null;
 }
 
 function taskPrompt(task: LoadedTask): string {
@@ -64,7 +98,7 @@ export class EvaluationRunner {
     let retries = 0;
     let answer = '';
 
-    for (let step = 0; step < (task.config.max_steps ?? 8); step += 1) {
+    for (let step = 0; step < (task.config.max_steps ?? 12); step += 1) {
       if (Date.now() > deadline) {
         break;
       }
