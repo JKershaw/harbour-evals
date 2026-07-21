@@ -51,7 +51,7 @@ async function main(): Promise<void> {
   const runner = new EvaluationRunner(provider);
   const result = await runner.runSuite(args.models, args.tasksRoot, args.fixturesRoot, args.resultsDir);
   // eslint-disable-next-line no-console
-  console.log(`Completed ${result.tasks.length} task runs. Reports written to ${args.resultsDir}`);
+  console.log(`Completed ${result.tasks.length} task runs. Reports written to ${result.runDir ?? args.resultsDir}`);
 }
 
 main().catch((error: unknown) => {

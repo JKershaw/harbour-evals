@@ -60,12 +60,14 @@ export function buildCsvReport(run: SuiteRunResult): string {
   return [header, ...rows].map((row) => row.map(csvEscape).join(',')).join('\n').concat('\n');
 }
 
-export async function writeReports(resultsDir: string, run: SuiteRunResult): Promise<void> {
-  await fs.mkdir(resultsDir, { recursive: true });
+export async function writeReports(resultsDir: string, run: SuiteRunResult): Promise<string> {
+  const runDir = path.join(resultsDir, run.generatedAt.replace(/[:.]/g, '-'));
+  await fs.mkdir(runDir, { recursive: true });
   await Promise.all([
-    fs.writeFile(path.join(resultsDir, 'report.md'), buildMarkdownReport(run), 'utf8'),
-    fs.writeFile(path.join(resultsDir, 'report.json'), JSON.stringify(run, null, 2), 'utf8'),
-    fs.writeFile(path.join(resultsDir, 'report.csv'), buildCsvReport(run), 'utf8'),
-    fs.writeFile(path.join(resultsDir, 'transcripts.json'), JSON.stringify(run.tasks.map((task) => ({ taskId: task.taskId, model: task.model, transcript: task.transcript, answer: task.answer, breakdown: task.breakdown })), null, 2), 'utf8')
+    fs.writeFile(path.join(runDir, 'report.md'), buildMarkdownReport(run), 'utf8'),
+    fs.writeFile(path.join(runDir, 'report.json'), JSON.stringify(run, null, 2), 'utf8'),
+    fs.writeFile(path.join(runDir, 'report.csv'), buildCsvReport(run), 'utf8'),
+    fs.writeFile(path.join(runDir, 'transcripts.json'), JSON.stringify(run.tasks.map((task) => ({ taskId: task.taskId, model: task.model, transcript: task.transcript, answer: task.answer, breakdown: task.breakdown })), null, 2), 'utf8')
   ]);
+  return runDir;
 }

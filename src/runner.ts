@@ -141,7 +141,7 @@ export class EvaluationRunner {
       tasks: results
     };
 
-    await writeReports(resultsDir, run);
+    run.runDir = await writeReports(resultsDir, run);
     return run;
   }
 }
