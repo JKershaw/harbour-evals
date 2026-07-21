@@ -69,4 +69,21 @@ Each task is added as a directory with:
 
 The loader discovers tasks automatically from `/tasks/<type>/<task-id>/`, so adding a task does not require code changes.
 
+Tasks can use either:
+
+- `fixture: "<fixture-name>"` for deterministic local fixture runs
+- `scenario:` with `repository` + `commit` (+ optional `subdir`) to materialize a real repo snapshot into a local cache for evaluation
+
+Example scenario source in `task.yaml`:
+
+```yaml
+id: "review-001-real"
+type: "review"
+scenario:
+  repository: "https://github.com/org/project.git"
+  commit: "abc123def456"
+  subdir: "packages/api"
+tools: ["filesystem", "git"]
+```
+
 See `/home/runner/work/harbour-evals/harbour-evals/docs/plan.md` for the current checklist and `/home/runner/work/harbour-evals/harbour-evals/docs/architecture.md` for the runtime design.

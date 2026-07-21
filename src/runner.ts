@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { materializeGitScenario } from './scenario-loader.js';
 import { loadTasks } from './task-loader.js';
 import { writeReports } from './report.js';
 import { scoreTask } from './scorer.js';
@@ -67,9 +68,13 @@ function parseAgentResponse(content: string): AgentResponse | null {
 }
 
 function taskPrompt(task: LoadedTask): string {
+  const sourceLine = task.config.scenario
+    ? `Scenario Source: ${task.config.scenario.repository}@${task.config.scenario.commit}${task.config.scenario.subdir ? ` (${task.config.scenario.subdir})` : ''}`
+    : `Fixture Source: ${task.config.fixture ?? 'none'}`;
   return [
     `Task ID: ${task.config.id}`,
     `Task Type: ${task.config.type}`,
+    sourceLine,
     `Available Tools: ${task.config.tools.join(', ') || 'none'}`,
     '',
     task.prompt,
@@ -82,9 +87,13 @@ export class EvaluationRunner {
   constructor(private readonly provider: ProviderAdapter) {}
 
   async runTask(task: LoadedTask, model: string): Promise<TaskRunResult> {
+    const scenarioCacheRoot = path.resolve(process.env.SCENARIO_CACHE_DIR ?? '.cache/scenarios');
+    const workspaceDir = task.config.scenario
+      ? await materializeGitScenario(task.config.scenario, scenarioCacheRoot)
+      : task.fixtureDir;
     const transcript: ProviderMessage[] = [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: taskPrompt(task) }];
     const tools = createTools(task.config.tools, {
-      fixtureDir: task.fixtureDir,
+      fixtureDir: workspaceDir,
       searchFixturesDir: path.join(process.cwd(), 'fixtures', 'search'),
       docsFixturesDir: path.join(process.cwd(), 'fixtures', 'docs'),
       gitFixturesDir: path.join(process.cwd(), 'fixtures', 'git')

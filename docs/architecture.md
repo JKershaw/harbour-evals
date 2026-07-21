@@ -3,7 +3,9 @@
 ## Flow
 
 1. Load all task directories from `/tasks`
-2. Resolve the referenced fixture from `/fixtures`
+2. Resolve the task source:
+   - fixture-backed source from `/fixtures/<name>`
+   - scenario-backed source by materializing `repository@commit` into a local cache
 3. Create only the tools declared by the task
 4. Run a bounded agent loop through the provider adapter
 5. Capture transcript, tool usage, timing, and token metrics
@@ -13,6 +15,7 @@
 ## Components
 
 - `src/task-loader.ts` discovers and parses file-based task definitions
+- `src/scenario-loader.ts` materializes git-commit scenarios into local cached workspaces
 - `src/runner.ts` executes the provider loop with tool limits and timeouts
 - `src/scorer.ts` applies deterministic checks from `expected.yaml`
 - `src/report.ts` writes Markdown, JSON, CSV, and transcript outputs
@@ -23,6 +26,7 @@
 
 - Search and documentation lookups are fixture-backed
 - Git responses are stubbed from fixture files
+- Scenario tasks are pinned to exact commit SHAs
 - The provider request uses temperature `0`
 - Tool availability is task-scoped and fixed by configuration
 

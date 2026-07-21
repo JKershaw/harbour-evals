@@ -1,5 +1,11 @@
 export type TaskToolName = 'filesystem' | 'search' | 'documentation' | 'terminal' | 'git';
 
+export interface GitScenarioSource {
+  repository: string;
+  commit: string;
+  subdir?: string;
+}
+
 export interface Tool {
   name: TaskToolName;
   execute(request: Record<string, unknown>): Promise<ToolResponse>;
@@ -40,7 +46,8 @@ export interface ExpectedDefinition {
 export interface TaskConfig {
   id: string;
   type: string;
-  fixture: string;
+  fixture?: string;
+  scenario?: GitScenarioSource;
   tools: TaskToolName[];
   max_steps?: number;
   max_tool_calls?: number;

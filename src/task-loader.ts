@@ -34,8 +34,24 @@ export async function loadTask(taskDir: string, fixturesRoot: string): Promise<L
   const config = parse(taskYaml) as TaskConfig;
   const expected = parse(expectedYaml) as ExpectedDefinition;
 
-  if (!config.id || !config.type || !config.fixture) {
+  if (!config.id || !config.type) {
     throw new Error(`Task at ${taskDir} is missing required fields`);
+  }
+
+  const hasFixture = typeof config.fixture === 'string' && config.fixture.length > 0;
+  const hasScenario = Boolean(config.scenario);
+
+  if (!hasFixture && !hasScenario) {
+    throw new Error(`Task at ${taskDir} must define either fixture or scenario`);
+  }
+
+  if (hasScenario) {
+    if (!config.scenario?.repository) {
+      throw new Error(`Task at ${taskDir} scenario.repository is required`);
+    }
+    if (!config.scenario.commit) {
+      throw new Error(`Task at ${taskDir} scenario.commit is required`);
+    }
   }
 
   return {
@@ -48,6 +64,6 @@ export async function loadTask(taskDir: string, fixturesRoot: string): Promise<L
     prompt,
     expected,
     taskDir,
-    fixtureDir: path.join(fixturesRoot, config.fixture)
+    fixtureDir: hasFixture ? path.join(fixturesRoot, config.fixture as string) : ''
   };
 }

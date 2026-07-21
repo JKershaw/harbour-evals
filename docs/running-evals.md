@@ -17,6 +17,22 @@ OPENROUTER_API_KEY=<key> npm run evaluate -- --model <model-id>
 
 Reports are written to `results/` by default (`report.md`, `report.json`, `report.csv`, `transcripts.json`).
 
+## Scenario-backed Tasks (real repo snapshots)
+
+Tasks may define a `scenario` source in `task.yaml` instead of `fixture`:
+
+- `scenario.repository` — git URL or local path
+- `scenario.commit` — exact commit SHA to evaluate
+- `scenario.subdir` (optional) — restrict workspace root
+
+At runtime, the harness clones/fetches into a local cache and checks out the pinned commit before tools run.
+
+Optional cache override:
+
+```bash
+SCENARIO_CACHE_DIR=/tmp/harbour-scenarios OPENROUTER_API_KEY=<key> npm run evaluate -- --model <model-id>
+```
+
 ## Choosing a Free-tier Model
 
 OpenRouter exposes free-tier models at `https://openrouter.ai/api/v1/models` — their IDs end with `:free`.
