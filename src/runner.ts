@@ -5,7 +5,24 @@ import { scoreTask } from './scorer.js';
 import { createTools } from './tool-registry.js';
 import type { AgentResponse, LoadedTask, ProviderAdapter, ProviderMessage, SuiteRunResult, TaskRunResult, ToolCallRecord } from './types.js';
 
-const SYSTEM_PROMPT = `You are an evaluation agent. Reply with valid JSON only.\nUse one of these shapes:\n{"action":"tool","tool":"filesystem|search|documentation|terminal|git","input":{...}}\n{"action":"final","answer":"your final answer"}`;
+const SYSTEM_PROMPT = `You are an evaluation agent. Output only a single raw JSON object on every turn. Do not add XML tags, markdown code fences, or any text before or after the JSON.
+
+Use exactly one of these two shapes:
+
+Tool call:
+{"action":"tool","tool":"<name>","input":{...}}
+
+Final answer:
+{"action":"final","answer":"<complete answer as a string>"}
+
+Tool input schemas:
+- filesystem: {"action":"list","path":"."} to list a directory, {"action":"read","path":"src/server.ts"} to read a file
+- search: {"query":"your search terms"}
+- documentation: {"query":"topic to look up"}
+- git: {"command":"diff"} — allowed commands: diff, status, log, show
+- terminal: {"command":"npm test"}
+
+If your previous output was rejected, emit only the JSON object with no surrounding text.`;
 
 function parseAgentResponse(content: string): AgentResponse | null {
   try {
