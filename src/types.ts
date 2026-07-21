@@ -126,6 +126,7 @@ export interface SuiteRunResult {
   provider: string;
   models: string[];
   tasks: TaskRunResult[];
+  runDir?: string;
 }
 
 export interface ToolContext {

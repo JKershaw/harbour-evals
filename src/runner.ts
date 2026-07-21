@@ -123,9 +123,13 @@ export class EvaluationRunner {
   async runSuite(models: string[], tasksRoot: string, fixturesRoot: string, resultsDir: string): Promise<SuiteRunResult> {
     const tasks = await loadTasks(tasksRoot, fixturesRoot);
     const results: TaskRunResult[] = [];
+    const taskDelayMs = Math.max(0, parseInt(process.env.TASK_DELAY_MS ?? '0', 10) || 0);
 
     for (const model of models) {
       for (const task of tasks) {
+        if (taskDelayMs > 0 && results.length > 0) {
+          await new Promise<void>((resolve) => setTimeout(resolve, taskDelayMs));
+        }
         results.push(await this.runTask(task, model));
       }
     }
@@ -137,7 +141,7 @@ export class EvaluationRunner {
       tasks: results
     };
 
-    await writeReports(resultsDir, run);
+    run.runDir = await writeReports(resultsDir, run);
     return run;
   }
 }
