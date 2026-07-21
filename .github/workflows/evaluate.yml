@@ -1,0 +1,40 @@
+name: Run Evaluations
+
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: 'Comma-separated list of OpenRouter model IDs to evaluate'
+        required: true
+        default: 'openai/gpt-4o-mini'
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run evaluations
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          MODELS: ${{ inputs.models }}
+        run: npm run evaluate
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results-${{ github.run_id }}
+          path: results/
+          if-no-files-found: warn
