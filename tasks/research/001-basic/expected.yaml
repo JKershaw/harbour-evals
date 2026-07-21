@@ -1,0 +1,18 @@
+required:
+  - id: "identifies_root_cause"
+    type: "contains_any"
+    values:
+      - "relation mode"
+      - "relationmode prisma"
+  - id: "references_correct_documentation"
+    type: "documentation_cited"
+    values:
+      - "[docs:prisma-relation-mode]"
+optional:
+  - id: "uses_search"
+    type: "tool_called"
+    value: "search"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

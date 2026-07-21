@@ -1,0 +1,9 @@
+id: "design-001-basic"
+type: "design"
+fixture: "typescript-app"
+tools:
+  - "filesystem"
+  - "documentation"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

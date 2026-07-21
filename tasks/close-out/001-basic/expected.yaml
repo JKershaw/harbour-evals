@@ -1,0 +1,18 @@
+required:
+  - id: "mentions_fix_summary"
+    type: "contains_any"
+    values:
+      - "fix summary"
+      - "validation"
+      - "quote endpoint"
+  - id: "mentions_follow_up"
+    type: "contains_any"
+    values:
+      - "follow-up"
+      - "tests"
+      - "monitoring"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

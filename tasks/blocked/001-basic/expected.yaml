@@ -1,0 +1,17 @@
+required:
+  - id: "identifies_file"
+    type: "contains"
+    value: "src/server.ts"
+  - id: "identifies_validation_gap"
+    type: "contains_any"
+    values:
+      - "validation"
+      - "invalid quantity"
+optional:
+  - id: "uses_git"
+    type: "tool_called"
+    value: "git"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

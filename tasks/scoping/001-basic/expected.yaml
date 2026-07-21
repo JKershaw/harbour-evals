@@ -1,0 +1,15 @@
+required:
+  - id: "mentions_smallest_change"
+    type: "contains_any"
+    values:
+      - "smallest safe change"
+      - "minimal change"
+      - "scope"
+  - id: "mentions_validation"
+    type: "contains"
+    value: "validation"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

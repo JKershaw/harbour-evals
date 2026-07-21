@@ -1,0 +1,18 @@
+required:
+  - id: "mentions_middleware"
+    type: "contains"
+    value: "middleware"
+  - id: "mentions_error_handling"
+    type: "contains_any"
+    values:
+      - "error handling"
+      - "invalid input"
+      - "validation error"
+optional:
+  - id: "uses_documentation"
+    type: "tool_called"
+    value: "documentation"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

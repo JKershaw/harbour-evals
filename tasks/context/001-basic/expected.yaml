@@ -1,0 +1,12 @@
+required:
+  - id: "mentions_quote_route"
+    type: "contains"
+    value: "/quote"
+  - id: "mentions_math_helper"
+    type: "contains"
+    value: "divide"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70
