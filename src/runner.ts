@@ -127,11 +127,14 @@ export class EvaluationRunner {
 
       if (toolCalls.length >= (task.config.max_tool_calls ?? 6)) {
         // If the model keeps producing tool calls after limit, extract plain text as answer
+        // only when it looks like a substantive final answer (not a transition sentence)
         const plainText = response.content
           .replace(/<tool_call>[\s\S]*?<\/tool_call>/g, '')
           .replace(/\{[\s\S]*\}/g, '')
           .trim();
-        if (plainText.length > 20) {
+        const TRANSITION_STARTERS = ["let me", "now let me", "i'll", "i need to", "i will", "let's", "next,", "first,", "first let"];
+        const looksLikeTransition = TRANSITION_STARTERS.some((s) => plainText.toLowerCase().startsWith(s));
+        if (plainText.length > 150 && !looksLikeTransition) {
           answer = plainText;
           break;
         }
