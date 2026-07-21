@@ -14,7 +14,7 @@ Build a minimal Harbour agent evaluation harness that can load file-based tasks,
 - [x] Implement Markdown, JSON, and CSV reports
 - [x] Add required task-type directories and seed MVP tasks
 - [x] Add focused automated tests
-- [ ] Run validation and manual smoke evaluation
+- [x] Run validation and manual smoke evaluation
 
 ## Notes
 
