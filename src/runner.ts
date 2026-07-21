@@ -104,8 +104,9 @@ export class EvaluationRunner {
         continue;
       }
 
-      const toolResponse = await tool.execute(parsed.input);
-      toolCalls.push({ tool: parsed.tool, input: parsed.input, ok: toolResponse.ok, response: toolResponse.data ?? toolResponse.error ?? null });
+      const toolInput: Record<string, unknown> = typeof parsed.input === 'object' && parsed.input !== null ? (parsed.input as Record<string, unknown>) : {};
+      const toolResponse = await tool.execute(toolInput);
+      toolCalls.push({ tool: parsed.tool, input: toolInput, ok: toolResponse.ok, response: toolResponse.data ?? toolResponse.error ?? null });
       transcript.push({
         role: 'user',
         content: `TOOL RESULT ${parsed.tool}: ${JSON.stringify(toolResponse)}`
