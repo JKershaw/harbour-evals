@@ -1,0 +1,9 @@
+id: "close-out-001-basic"
+type: "close-out"
+fixture: "typescript-app"
+tools:
+  - "filesystem"
+  - "git"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

@@ -1,0 +1,4 @@
+commit abcdef1234567890
+Author: Example Developer
+
+Add quote loading without awaiting the promise.

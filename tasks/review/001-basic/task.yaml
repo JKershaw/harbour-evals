@@ -1,0 +1,8 @@
+id: "review-001-basic"
+type: "review"
+fixture: "typescript-app"
+tools:
+  - "git"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

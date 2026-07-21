@@ -1,0 +1,16 @@
+required:
+  - id: "mentions_went_well"
+    type: "contains_any"
+    values:
+      - "went well"
+      - "positive"
+  - id: "mentions_improvement"
+    type: "contains_any"
+    values:
+      - "improvement"
+      - "next time"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

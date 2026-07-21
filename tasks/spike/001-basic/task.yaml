@@ -1,0 +1,9 @@
+id: "spike-001-basic"
+type: "spike"
+fixture: "typescript-app"
+tools:
+  - "search"
+  - "documentation"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

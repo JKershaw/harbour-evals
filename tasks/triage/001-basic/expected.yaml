@@ -1,0 +1,18 @@
+required:
+  - id: "mentions_severity"
+    type: "contains_any"
+    values:
+      - "high severity"
+      - "medium severity"
+      - "severity"
+  - id: "mentions_user_impact"
+    type: "contains_any"
+    values:
+      - "user impact"
+      - "runtime error"
+      - "invalid quote"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

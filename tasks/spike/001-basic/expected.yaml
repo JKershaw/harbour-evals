@@ -1,0 +1,12 @@
+required:
+  - id: "mentions_spike"
+    type: "contains"
+    value: "spike"
+  - id: "mentions_validation"
+    type: "contains"
+    value: "validation"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

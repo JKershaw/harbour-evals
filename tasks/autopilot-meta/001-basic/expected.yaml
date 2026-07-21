@@ -1,0 +1,18 @@
+required:
+  - id: "mentions_role"
+    type: "contains_any"
+    values:
+      - "research"
+      - "implementation"
+      - "plan"
+  - id: "mentions_tools"
+    type: "contains_any"
+    values:
+      - "tools"
+      - "filesystem"
+      - "search"
+optional: []
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

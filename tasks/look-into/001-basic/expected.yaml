@@ -1,0 +1,18 @@
+required:
+  - id: "mentions_relation_mode"
+    type: "contains"
+    value: "relationmode"
+  - id: "mentions_emulation"
+    type: "contains_any"
+    values:
+      - "emulate"
+      - "foreign key"
+      - "relation integrity"
+optional:
+  - id: "uses_search"
+    type: "tool_called"
+    value: "search"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

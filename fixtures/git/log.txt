@@ -1,0 +1,2 @@
+abcdef1 Add quote loading without awaiting the promise
+1234567 Initial fixture app

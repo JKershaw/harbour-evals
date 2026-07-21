@@ -11,13 +11,13 @@ Lightweight evaluation harness for measuring how well different LLMs perform Har
 - Configure agent tools per task
 - Emit machine-readable and human-readable reports
 
-## Planned MVP scope
+## Implemented MVP scope
 
 - OpenRouter provider adapter
 - One fixture repository
-- Stubbed filesystem, search, documentation, terminal, and git tools
-- Five simple evaluation tasks
-- Deterministic scoring with optional transcript capture
+- Configurable filesystem, search, documentation, terminal, and git tools
+- Seed task directories for Harbour task types
+- Deterministic scoring with transcript capture
 - Markdown, JSON, and CSV reports
 
 ## Repository layout
@@ -32,4 +32,41 @@ This repository will contain:
 - `/results` generated evaluation output
 - `/docs` planning and architecture notes
 
-See `/home/runner/work/harbour-evals/harbour-evals/docs/plan.md` for the current implementation checklist.
+## Usage
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run validation:
+
+```bash
+npm run check
+```
+
+Run an evaluation against OpenRouter:
+
+```bash
+OPENROUTER_API_KEY=... npm run evaluate -- --model openai/gpt-5-mini
+```
+
+Reports are written to `/home/runner/work/harbour-evals/harbour-evals/results` by default:
+
+- `report.md`
+- `report.json`
+- `report.csv`
+- `transcripts.json`
+
+## Task format
+
+Each task is added as a directory with:
+
+- `task.yaml`
+- `prompt.md`
+- `expected.yaml`
+
+The loader discovers tasks automatically from `/tasks/<type>/<task-id>/`, so adding a task does not require code changes.
+
+See `/home/runner/work/harbour-evals/harbour-evals/docs/plan.md` for the current checklist and `/home/runner/work/harbour-evals/harbour-evals/docs/architecture.md` for the runtime design.

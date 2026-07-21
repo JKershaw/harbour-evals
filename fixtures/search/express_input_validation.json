@@ -1,0 +1,10 @@
+{
+  "query": "Express input validation",
+  "results": [
+    {
+      "title": "Express validation middleware",
+      "url": "https://expressjs.com/en/guide/using-middleware.html",
+      "snippet": "Use middleware to validate incoming request data before route handlers execute."
+    }
+  ]
+}

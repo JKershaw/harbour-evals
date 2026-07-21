@@ -1,0 +1,10 @@
+id: "research-001-basic"
+type: "research"
+fixture: "typescript-app"
+tools:
+  - "filesystem"
+  - "search"
+  - "documentation"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

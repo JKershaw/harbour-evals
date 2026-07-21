@@ -1,0 +1,17 @@
+required:
+  - id: "mentions_missing_await"
+    type: "contains_any"
+    values:
+      - "await"
+      - "promise"
+  - id: "mentions_server_file"
+    type: "contains"
+    value: "src/server.ts"
+optional:
+  - id: "uses_git"
+    type: "tool_called"
+    value: "git"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

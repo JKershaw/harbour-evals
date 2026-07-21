@@ -1,0 +1,10 @@
+{
+  "query": "Async handler patterns",
+  "results": [
+    {
+      "title": "Async handler wrapper",
+      "url": "https://expressjs.com/en/advanced/best-practice-performance.html",
+      "snippet": "Wrap async handlers so thrown errors are forwarded consistently."
+    }
+  ]
+}

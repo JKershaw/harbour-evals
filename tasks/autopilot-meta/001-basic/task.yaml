@@ -1,0 +1,9 @@
+id: "autopilot-meta-001-basic"
+type: "autopilot-meta"
+fixture: "typescript-app"
+tools:
+  - "filesystem"
+  - "search"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

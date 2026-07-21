@@ -1,0 +1,18 @@
+required:
+  - id: "names_divide"
+    type: "contains"
+    value: "divide"
+  - id: "mentions_zero_guard"
+    type: "contains_any"
+    values:
+      - "zero"
+      - "validation guard"
+      - "guard against quantity 0"
+optional:
+  - id: "uses_filesystem"
+    type: "tool_called"
+    value: "filesystem"
+score:
+  required_weight: 80
+  optional_weight: 20
+  pass_threshold: 70

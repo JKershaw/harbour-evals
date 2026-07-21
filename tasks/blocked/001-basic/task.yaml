@@ -1,0 +1,9 @@
+id: "blocked-001-basic"
+type: "blocked"
+fixture: "typescript-app"
+tools:
+  - "filesystem"
+  - "git"
+max_steps: 8
+max_tool_calls: 4
+timeout_seconds: 90

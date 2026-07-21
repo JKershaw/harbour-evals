@@ -6,14 +6,14 @@ Build a minimal Harbour agent evaluation harness that can load file-based tasks,
 
 ## Checklist
 
-- [ ] Establish project tooling and TypeScript build/test scripts
-- [ ] Implement task and fixture loading from directories
-- [ ] Implement OpenRouter provider adapter
-- [ ] Implement configurable stub tools
-- [ ] Implement runner, scoring, transcript capture, and metrics
-- [ ] Implement Markdown, JSON, and CSV reports
-- [ ] Add required task-type directories and seed MVP tasks
-- [ ] Add focused automated tests
+- [x] Establish project tooling and TypeScript build/test scripts
+- [x] Implement task and fixture loading from directories
+- [x] Implement OpenRouter provider adapter
+- [x] Implement configurable stub tools
+- [x] Implement runner, scoring, transcript capture, and metrics
+- [x] Implement Markdown, JSON, and CSV reports
+- [x] Add required task-type directories and seed MVP tasks
+- [x] Add focused automated tests
 - [ ] Run validation and manual smoke evaluation
 
 ## Notes
