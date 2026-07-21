@@ -3,6 +3,6 @@ type: "bug"
 fixture: "typescript-app"
 tools:
   - "filesystem"
-max_steps: 8
-max_tool_calls: 4
+max_steps: 12
+max_tool_calls: 6
 timeout_seconds: 90

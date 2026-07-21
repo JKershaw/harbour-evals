@@ -126,6 +126,15 @@ export class EvaluationRunner {
       }
 
       if (toolCalls.length >= (task.config.max_tool_calls ?? 6)) {
+        // If the model keeps producing tool calls after limit, extract plain text as answer
+        const plainText = response.content
+          .replace(/<tool_call>[\s\S]*?<\/tool_call>/g, '')
+          .replace(/\{[\s\S]*\}/g, '')
+          .trim();
+        if (plainText.length > 20) {
+          answer = plainText;
+          break;
+        }
         retries += 1;
         transcript.push({ role: 'user', content: 'You have reached the tool-call limit. Return a final answer now.' });
         continue;
@@ -138,7 +147,18 @@ export class EvaluationRunner {
         continue;
       }
 
-      const toolInput: Record<string, unknown> = typeof parsed.input === 'object' && parsed.input !== null ? (parsed.input as Record<string, unknown>) : {};
+      // Merge top-level non-reserved keys into the input (models sometimes place input fields at top level)
+      const RESERVED_KEYS = new Set(['action', 'tool', 'input', 'answer']);
+      const topLevelExtras: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(parsed as unknown as Record<string, unknown>)) {
+        if (!RESERVED_KEYS.has(key)) {
+          topLevelExtras[key] = value;
+        }
+      }
+      const toolInput: Record<string, unknown> = {
+        ...(typeof parsed.input === 'object' && parsed.input !== null ? (parsed.input as Record<string, unknown>) : {}),
+        ...topLevelExtras
+      };
       const toolResponse = await tool.execute(toolInput);
       toolCalls.push({ tool: parsed.tool, input: toolInput, ok: toolResponse.ok, response: toolResponse.data ?? toolResponse.error ?? null });
       transcript.push({
