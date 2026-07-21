@@ -1,7 +1,10 @@
 required:
   - id: "mentions_validation"
-    type: "contains"
-    value: "validation"
+    type: "contains_any"
+    values:
+      - "validation"
+      - "validate"
+      - "validates"
   - id: "mentions_tests"
     type: "contains"
     value: "tests"

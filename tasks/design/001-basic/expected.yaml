@@ -8,6 +8,8 @@ required:
       - "error handling"
       - "invalid input"
       - "validation error"
+      - "error response"
+      - "handle errors"
 optional:
   - id: "uses_documentation"
     type: "tool_called"

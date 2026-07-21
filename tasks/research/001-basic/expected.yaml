@@ -4,6 +4,9 @@ required:
     values:
       - "relation mode"
       - "relationmode prisma"
+      - "emulate"
+      - "emulation"
+      - "foreign key"
   - id: "references_correct_documentation"
     type: "documentation_cited"
     values:

@@ -37,7 +37,7 @@ test('runner: invalid JSON response triggers retry and increments retries', asyn
 
 test('runner: exceeding tool call limit triggers retry message', async () => {
   const task = await loadTask(path.resolve('tasks/bug/001-basic'), path.resolve('fixtures'));
-  // The task has max_tool_calls: 4; we'll exceed it by sending 5 tool calls then a final
+  // The task now has max_tool_calls: 6; we'll exceed it by sending 7 tool calls then a final
   const toolCall = '{"action":"tool","tool":"filesystem","input":{"action":"read","path":"src/math.ts"}}';
   const runner = new EvaluationRunner(
     new MockProvider([
@@ -45,7 +45,9 @@ test('runner: exceeding tool call limit triggers retry message', async () => {
       toolCall,
       toolCall,
       toolCall,
-      toolCall, // This 5th call should trigger the limit
+      toolCall,
+      toolCall,
+      toolCall, // This 7th call should trigger the limit
       '{"action":"final","answer":"divide zero guard"}'
     ])
   );

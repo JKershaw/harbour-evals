@@ -1,1 +1,1 @@
-Write a brief retro note for this issue. Mention one thing that went well and one improvement.
+Write a brief retro note for the quote endpoint quantity bug fix. Note one thing that went well and one area for improvement.

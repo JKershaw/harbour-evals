@@ -1,7 +1,9 @@
 required:
   - id: "mentions_validation_middleware"
-    type: "contains"
-    value: "validation middleware"
+    type: "contains_all"
+    values:
+      - "validation"
+      - "middleware"
   - id: "mentions_tests"
     type: "contains"
     value: "tests"

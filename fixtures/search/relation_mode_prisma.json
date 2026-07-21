@@ -1,0 +1,10 @@
+{
+  "query": "relation mode prisma",
+  "results": [
+    {
+      "title": "Prisma relation mode",
+      "url": "https://www.prisma.io/docs/orm/prisma-schema/data-model/relations/relation-mode",
+      "snippet": "relationMode = prisma lets Prisma emulate foreign key constraints in the client layer when the database does not enforce them."
+    }
+  ]
+}

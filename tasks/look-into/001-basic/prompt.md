@@ -1,1 +1,1 @@
-Look into why the database config uses relationMode prisma and explain what it implies.
+Use the filesystem tool to inspect the database config in the fixture. Explain why it uses relationMode prisma and what this implies.

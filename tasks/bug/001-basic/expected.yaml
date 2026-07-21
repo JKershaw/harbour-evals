@@ -8,6 +8,8 @@ required:
       - "zero"
       - "validation guard"
       - "guard against quantity 0"
+      - "division"
+      - "denominator"
 optional:
   - id: "uses_filesystem"
     type: "tool_called"
