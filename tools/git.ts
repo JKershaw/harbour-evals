@@ -15,11 +15,21 @@ export class GitTool implements Tool {
       return { ok: false, error: 'unsupported git command' };
     }
 
-    try {
-      const content = await fs.readFile(path.join(this.context.gitFixturesDir, `${command}.txt`), 'utf8');
-      return { ok: true, data: { command, content } };
-    } catch (error: unknown) {
-      return { ok: false, error: error instanceof Error ? error.message : 'git fixture error' };
+    const filename = `${command}.txt`;
+    const dirs = [
+      ...(this.context.taskDir ? [path.join(this.context.taskDir, 'git')] : []),
+      this.context.gitFixturesDir
+    ];
+
+    for (const dir of dirs) {
+      try {
+        const content = await fs.readFile(path.join(dir, filename), 'utf8');
+        return { ok: true, data: { command, content } };
+      } catch {
+        // not found in this dir, try next
+      }
     }
+
+    return { ok: false, error: `no fixture found for git ${command}` };
   }
 }

@@ -141,4 +141,6 @@ export interface ToolContext {
   searchFixturesDir: string;
   docsFixturesDir: string;
   gitFixturesDir: string;
+  /** Optional: task's own directory. When set, tools check for task-local fixture subdirectories (search/, docs/, git/) before falling back to the global fixture directories. */
+  taskDir?: string;
 }

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { Tool, ToolContext, ToolResponse } from '../src/types.js';
-import { slugify } from '../src/utils.js';
+import { findFixtureFile, slugify } from '../src/utils.js';
 
 export class DocumentationTool implements Tool {
   readonly name = 'documentation' as const;
@@ -14,12 +14,22 @@ export class DocumentationTool implements Tool {
       return { ok: false, error: 'query is required' };
     }
 
-    const filePath = path.join(this.context.docsFixturesDir, `${slugify(query)}.md`);
-    try {
-      const content = await fs.readFile(filePath, 'utf8');
-      return { ok: true, data: { query, content } };
-    } catch {
-      return { ok: true, data: { query, content: '' } };
+    const slug = slugify(query);
+    const dirs = [
+      ...(this.context.taskDir ? [path.join(this.context.taskDir, 'docs')] : []),
+      this.context.docsFixturesDir
+    ];
+
+    const filePath = await findFixtureFile(dirs, slug, '.md');
+    if (filePath) {
+      try {
+        const content = await fs.readFile(filePath, 'utf8');
+        return { ok: true, data: { query, content } };
+      } catch {
+        // fall through to empty result
+      }
     }
+
+    return { ok: true, data: { query, content: '' } };
   }
 }

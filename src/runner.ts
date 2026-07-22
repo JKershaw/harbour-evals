@@ -96,7 +96,8 @@ export class EvaluationRunner {
       fixtureDir: workspaceDir,
       searchFixturesDir: path.join(process.cwd(), 'fixtures', 'search'),
       docsFixturesDir: path.join(process.cwd(), 'fixtures', 'docs'),
-      gitFixturesDir: path.join(process.cwd(), 'fixtures', 'git')
+      gitFixturesDir: path.join(process.cwd(), 'fixtures', 'git'),
+      taskDir: task.taskDir
     });
     const toolCalls: ToolCallRecord[] = [];
     const startedAt = Date.now();
