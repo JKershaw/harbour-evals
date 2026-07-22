@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { Tool, ToolContext, ToolResponse } from '../src/types.js';
-import { slugify } from '../src/utils.js';
+import { findFixtureFile, slugify } from '../src/utils.js';
 
 export class SearchTool implements Tool {
   readonly name = 'search' as const;
@@ -14,12 +14,22 @@ export class SearchTool implements Tool {
       return { ok: false, error: 'query is required' };
     }
 
-    const filePath = path.join(this.context.searchFixturesDir, `${slugify(query)}.json`);
-    try {
-      const content = await fs.readFile(filePath, 'utf8');
-      return { ok: true, data: JSON.parse(content) };
-    } catch {
-      return { ok: true, data: { query, results: [] } };
+    const slug = slugify(query);
+    const dirs = [
+      ...(this.context.taskDir ? [path.join(this.context.taskDir, 'search')] : []),
+      this.context.searchFixturesDir
+    ];
+
+    const filePath = await findFixtureFile(dirs, slug, '.json');
+    if (filePath) {
+      try {
+        const content = await fs.readFile(filePath, 'utf8');
+        return { ok: true, data: JSON.parse(content) };
+      } catch {
+        // fall through to empty result
+      }
     }
+
+    return { ok: true, data: { query, results: [] } };
   }
 }
